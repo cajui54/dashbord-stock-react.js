@@ -1,4 +1,4 @@
 # Dashboard Stock
 
-Link do projeto [Adega 24hrs](https://vercel.com/cajui54/adega-24h).
+Link do projeto [Adega 24hrs](https://adega-24h.vercel.app/).
 
