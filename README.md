@@ -1,4 +1,4 @@
 # Dashboard Stock
 
-Link do projeto [Create React App](https://github.com/facebook/create-react-app).
+Link do projeto [Adega 24hrs](https://vercel.com/cajui54/adega-24h).
 
