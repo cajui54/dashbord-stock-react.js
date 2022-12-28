@@ -14,7 +14,7 @@ const LoginStyled = styled.div`
     }
     .container-logo {
         background-color: #e11d48;
-        font-family: 'Montserrat', sans-serif;
+        font-family: 'Montserrat', sans-serif, Arial, Helvetica;
         color: #fff;
         width: 100px;
         height: 100px;
@@ -34,7 +34,7 @@ const LoginStyled = styled.div`
     fieldset {
         margin: 10px auto;
         width: 80%;
-        min-height: 200px;
+        min-height: 230px;
         border-radius: 10px;
         border: .5px solid #111827;
         display: flex;
@@ -51,7 +51,7 @@ const LoginStyled = styled.div`
         margin: 10px auto;
         width: 80%;
         display: flex;
-        font-family: 'Oxygen Mono', monospace;
+        font-family: 'Oxygen Mono', monospace, Arial, Helvetica, sans-serif;
         font-weight: bold;
         font-size: 15px;
         color: #111827;
@@ -73,12 +73,9 @@ const LoginStyled = styled.div`
         transition: all .5s ease-in
     }
     .container-inputs input {
-        border: none;
         width: 100%;
         padding: 5px 30px;
         font-weight: bold;
-        background-color: #f4f4f5;
-        border-bottom: 1px solid #111827;
         outline: none;
     }
     .container-inputs input:focus {
@@ -136,7 +133,25 @@ const LoginStyled = styled.div`
     .disabledOn {
         background-color: #f87171;
     }
-  
+    .msg-error {
+        font-size: 10px;
+        font-family: 'Oxygen Mono', monospace, Arial, Helvetica, sans-serif;
+        color: #dc2626;
+        background-color: #fee2e2;
+        padding: 5px;
+        margin: 2px auto;
+        border: .2px solid #dc2626;
+    }
+    .textBoxError {
+        background-color: #fee2e2;
+        border: none;
+        border-bottom: .2px solid #dc2626;
+    }
+    .defaultTextBox {
+        background-color: #f4f4f5;
+        border: none;
+        border-bottom: 1px solid #111827;
+    }
 
 `
 export default LoginStyled;

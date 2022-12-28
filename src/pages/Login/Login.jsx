@@ -3,18 +3,62 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 import imageBeer from  '../../assets/images/imgBeer.jpg'
 import LoginStyled from './LoginStyled';
+import useRequest from '../../hooks/useRequest'
 
 const Login = () => {
+    
     const[styledBtn, setStyled] = useState('disabledOn');
-
+    const [message, setMessage] = useState(true)
     const [inputs, setInput] = useState({});
-
+    const [textBox, setTextBox] = useState({});
+    const {users} = useRequest();
     const [disabledBtn, setDisabled] = useState(true);
     const iconLogin = useRef('');
     const iconPassword = useRef('');
-    const refButton = useRef('')
+    const refButton = useRef('');
+    console.log(users);
 
-    const handleSubmit = (event) => event.preventDefault();
+    const findUsers = () => {
+        return  users.find((login) => login.user === inputs.user && login.password === inputs.password);
+    }
+    
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        if(findUsers()) {
+            
+            setMessage(true);
+            checkLogin(true);
+        }else {
+            checkLogin(false);
+            setMessage(false);
+        }
+    }
+
+    const checkLogin = (status) => {
+        if(status) {
+            iconLogin.current.classList.remove('focus');
+            iconPassword.current.classList.remove('focus');
+            textBoxError(status);
+        } else {
+            iconLogin.current.classList.add('focus');
+            iconPassword.current.classList.add('focus');
+            textBoxError(status);
+        }
+    }
+      const textBoxError = (status) => {
+        Object.values(textBox).forEach((text) => {
+            if(!status) {
+                text.classList.remove('defaultTextBox');
+                text.classList.add('textBoxError');
+            }
+            else {
+                text.classList.add('defaultTextBox');
+                text.classList.remove('textBoxError');
+            }
+            
+            
+        })
+      }
     const buttonEnabled = (_inputs) => {
         let lengthObj = Object.keys(_inputs).length;
         if(lengthObj === 2) {
@@ -29,7 +73,8 @@ const Login = () => {
         }
         
     }
-    const handleBlur = (refAction) => {
+    const handleBlur = (event ,refAction) => {
+        setTextBox({...textBox, [event.target.name]: event.target});
         refAction.current.classList.remove('focus');
         refAction.current.classList.add('offFocus');
     }
@@ -39,9 +84,13 @@ const Login = () => {
     }
     const handleChange = ({target}) => {
         setInput({...inputs, [target.name]: target.value});
-        buttonEnabled(inputs)
+        buttonEnabled(inputs);
     }
-
+    const resetAll = () => {
+        setMessage(true);
+        checkLogin(true);
+        
+    }
   return (
     <LoginStyled>
       
@@ -62,9 +111,10 @@ const Login = () => {
                             ref={iconLogin}
                          />
                         <input type="text"
+                            className='defaultTextBox'
                              name='user'
                              onFocus={ () => handleFocus(iconLogin)}
-                             onBlur={ () => handleBlur(iconLogin)}
+                             onBlur={ (event) => handleBlur(event, iconLogin)}
                              onChange={handleChange}
                          />
                     </div>
@@ -75,17 +125,29 @@ const Login = () => {
                     <div className="container-inputs">
                         <FontAwesomeIcon ref={iconPassword} className='icon' icon={faLock} />
                         <input type="password"
+                            className='defaultTextBox'
                              name='password'
                              onFocus={() => handleFocus(iconPassword)}
-                             onBlur={() => handleBlur(iconPassword)}
+                             onBlur={(event) => handleBlur(event, iconPassword)}
                              onChange={handleChange}
                          />
                     </div>
                 </label>
 
+                {
+                    !message && (
+                        <div className='msg-error'>
+                            <p>Login ou Senha inválido!</p>
+                        </div>
+                    )
+                }
+
                 <div className="container-btns">
-                    <button disabled={disabledBtn} className={`${styledBtn}`}>Entrar</button>
-                    <button type="reset">Cancelar</button>
+                    <button
+                     disabled={disabledBtn}
+                     className={`${styledBtn}`}>Entrar</button>
+
+                    <button type="reset" onClick={resetAll}>Cancelar</button>
                 </div>
             </fieldset>
         </form>
