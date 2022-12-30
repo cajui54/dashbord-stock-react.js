@@ -1,39 +1,41 @@
 import {useState, useRef} from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 import imageBeer from  '../../assets/images/imgBeer.jpg'
 import LoginStyled from './LoginStyled';
-import useRequest from '../../hooks/useRequest'
+import useUserContext from '../../hooks/useUserContext';
+
 
 const Login = () => {
-    
+    const url = 'http://localhost:3000/users';
+    const navegation = useNavigate();
     const[styledBtn, setStyled] = useState('disabledOn');
     const [message, setMessage] = useState(true)
     const [inputs, setInput] = useState({});
     const [textBox, setTextBox] = useState({});
-    const {users} = useRequest();
+    const {useFetch} = useUserContext();
     const [disabledBtn, setDisabled] = useState(true);
     const iconLogin = useRef('');
     const iconPassword = useRef('');
-    const refButton = useRef('');
-    console.log(users);
+    const { datas : users} = useFetch(url);
 
+    console.log(users);
+    
     const findUsers = () => {
         return  users.find((login) => login.user === inputs.user && login.password === inputs.password);
     }
-    
     const handleSubmit = (event) => {
         event.preventDefault();
         if(findUsers()) {
-            
             setMessage(true);
             checkLogin(true);
+            navegation(`/home/${findUsers().id}`);
         }else {
             checkLogin(false);
             setMessage(false);
         }
     }
-
     const checkLogin = (status) => {
         if(status) {
             iconLogin.current.classList.remove('focus');
